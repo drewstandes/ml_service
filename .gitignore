@@ -17,3 +17,5 @@ media
 env/
 
 .idea/
+
+.ipynb_checkpoints/
