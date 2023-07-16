@@ -2,6 +2,7 @@ import inspect
 from django.test import TestCase
 
 from apps.ml.income_classifier.random_forest import RandomForestClassifier
+from apps.ml.income_classifier.extra_trees import ExtraTreesClassifier
 from apps.ml.registry import MLRegistry
 
 class MLTests(TestCase):
@@ -45,4 +46,27 @@ class MLTests(TestCase):
                     algorithm_description, algorithm_code)
         # there should be one endpoint available
         self.assertEqual(len(registry.endpoints), 1)
+
+    def test_et_algorithm(self):
+        input_data = {
+            "age": 37,
+            "workclass": "Private",
+            "fnlwgt": 34146,
+            "education": "HS-grad",
+            "education-num": 9,
+            "marital-status": "Married-civ-spouse",
+            "occupation": "Craft-repair",
+            "relationship": "Husband",
+            "race": "White",
+            "sex": "Male",
+            "capital-gain": 0,
+            "capital-loss": 0,
+            "hours-per-week": 68,
+            "native-country": "United-States"
+        }
+    
+        classifier = ExtraTreesClassifier()
+        outcome = classifier.compute_prediction(input_data=input_data)
+        self.assertEqual("OK", outcome['status'])
+        self.assertEqual("<=50K", outcome['label'])
 
